@@ -1,0 +1,6 @@
+url(r'^heartpulse/(?P<lastname>[\w|\W]+)/(?P<firstname>[\w|\W]+)/(?P<middlename>[\w|\W]+)/(?P<username>[\w|\W.@+-|\d]+)/(?P<heartbeat>\d+)/(?P<heartbeat_time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2})/(?P<temperature>\d+.\d{2})/(?P<temperature_time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2})$', views.beat),
+		url(r'^temperature/(?P<lastname>[\w|\W]+)/(?P<firstname>[\w|\W]+)/(?P<middlename>[\w|\W]+)/(?P<username>[\w|\W.@+-|\d]+)/(?P<temperature>\d+.\d{2})/(?P<temperature_time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2})$', views.temperature),
+		url(r'^register/(?P<username>[\w|\W.@+-|\d]+)/(?P<lastname>[\w|\W]+)/(?P<firstname>[\w|\W]+)/(?P<middlename>[\w|\W]+)/(?P<emailadd>[\w|\W.@+-|\d]+)/(?P<birthday>\d{4}-\d{2}-\d{2})/(?P<gender>[\w]+)/(?P<cellphone1>\d+.\d{2})/(?P<cellphone2>\d+.\d{2})/(?P<password>[\w|\W.@+-|\d]+)$', views.register2),
+		url(r'^android/heartbeatjson/(?P<lastname>[\w|\W|.*]+)/(?P<firstname>[\w|\W|.*]+)/(?P<middlename>[\w|\W|.*]+)$',views.ShowHeartBeatReading.as_view()),
+		url(r'^android/temperaturejson/(?P<lastname>[\w|\W|.*]+)/(?P<firstname>[\w|\W|.*]+)/(?P<middlename>[\w|\W|.*]+)$',views.ShowTemperatureReading.as_view()),
+		url(r'^android/profile/$', views.ShowAllProfile.as_view()),

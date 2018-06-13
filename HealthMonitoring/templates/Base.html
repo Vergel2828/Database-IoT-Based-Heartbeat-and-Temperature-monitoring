@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'script.html' %}
+    {% load static %}
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <br>
+    <div class="container">
+      {% if user.is_authenticated %}
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand select-brand" title="IoT based patient and temperature monitoring">
+                <img src="{% static 'images/logo-20.png' %}" alt="logo" class="sample-logo2" />
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="{% block home-selected %}{% endblock %}"><a href="{% url 'HealthMonitoring:home' %}">Home<span class="sr-only">(current)</span></a></li>
+                <li class="{% block stat-selected %}{% endblock %}"><a href="{% url 'HealthMonitoring:statistics' %}">Statistics</a></li>
+                <!--
+                <li class="{% block about-selected %}{% endblock %}"><a href="#">About</a></li>
+                -->
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'HealthMonitoring:logout_user' %}">Logout</a></li>
+              </ul>
+              <form class="navbar-form navbar-right" method="GET">
+                <div class="input-group">
+                  <input class="form-control" type="text" name="q" placeholder="Search for.."/>
+                  <span class="input-group-btn">
+                    <button type="submit" value="search" class="btn btn-default">
+                      <a class="glyphicon glyphicon-search"></a>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      {% endif %}
+    </div>
+    {% block content %}
+    {% endblock %}
+    {% if user.is_authenticated %}
+    <div class="container">
+      <hr class="footer">
+      <p class="text-center"> <span class="glyphicon glyphicon-sunglasses"></span> IoT Based Patient and Temperature Monitoring 2018</p>
+    </div>
+    {% endif %}
+    <script>
+      $(document).ready(function(){
+        {% block jquery %}
+        {% endblock %}
+      })
+    </script>
+  </body>
+</html>

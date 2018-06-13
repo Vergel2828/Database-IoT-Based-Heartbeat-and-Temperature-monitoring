@@ -1,0 +1,299 @@
+{% extends 'Base.html' %}
+{% block title %}
+  Home | IoT Based Patient and Temperature Monitoring
+{% endblock %}
+{% block home-selected %}active{% endblock %}
+{% block content %}
+  {% load static %}
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <span>Personal Information</span>
+          <hr>
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-sm-12">
+              <div class="profile">
+                <img src="{% static 'images/picture.png' %}" height="100px" width="100px" alt="image" class="profile-image"/>
+              </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-12 col-sm-12">
+              <div class=" profile-details">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>First Name:</td>
+                      <td>{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+                      <td>Middle Name:</td>
+                      <td>{{ user.profile.middle_name }}</td>
+                    </tr>
+                    <tr>
+                      <td>Last Name:</td>
+                      <td>{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                      <td>Email Address:</td>
+                      <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                      <td>Age:</td>
+                      <td>{{ user.profile.age }}</td>
+                    </tr>
+                    <tr>
+                      <td>Birthday:</td>
+                      <td>{{ user.profile.birthday }}</td>
+                    </tr>
+                    <tr>
+                      <td>Gender:</td>
+                      <td>{{ user.profile.get_gender_display }}</td>
+                    </tr>
+                    <tr>
+                      <td>Contact Number:</td>
+                      <td>{{ user.profile.cellphone_number}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <span>Heart Rate and Temperature  <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Reading from Raspberry pi of heart rate and temperature realtime!"></a></span>
+          <hr>
+          <div id="ref">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              {% for item in user.heartratedata_set.all|dictsortreversed:"time_recorded"|slice:":1" %}
+                <div class="red-card-container">
+                  <div class="text-center center-display">
+                    <p class="medium-label">
+                      {{ item.get_status_display }}
+                    </p>
+                    <p class="zero-margin">
+                      {{ item.heart_rate_reading }}
+                      <span class="small-label">bpm</span>
+                      <img src="{% static 'images/giphy.gif' %}" height="25px" width="25px" alt="heart" />
+                    </p>
+                    <p class=" xsmall-label zero-margin">
+                      {{ item.time_recorded|date:"D d M Y"}}
+                    </p>
+                    <p class="xsmall-label zero-margin">
+                      {{ item.time_recorded|time:"h:i a" }}
+                    </p>
+                  </div>
+                </div>
+                <p class="zero-margin font-underline">Last Measurements</p>
+                {% for data in user.heartratedata_set.all|dictsortreversed:"time_recorded"|slice:":3" %}
+                  {% if data.time_recorded != item.time_recorded %}
+                    <div class="box-container">
+                      <div class="row">
+                      <div class="text-center col-lg-7 col-md-7 col-sm-8 col-xs-8">
+                        <p class="large-label">{{ data.get_status_display }}</p>
+                        <p class="xsmall-label"> {{ data.time_recorded }}</p>
+                      </div>
+                      <div class="col-lg-5 col-md-5 col-sm-4 col-xs-4">
+                        <span class="xlarge-label">
+                          {{ data.heart_rate_reading }}
+                          <span class="small-label">bpm</span>
+                            <img src="{% static 'images/heart-icon.png' %}" height="15px" width="18px" alt="heart icon"/>
+                        </span>
+                      </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              {% for item in user.temperaturedata_set.all|dictsortreversed:"time_recorded"|slice:":1" %}
+                <div class="green-card-container">
+                  <div class="text-center center-display">
+                    <p class="medium-label">
+                      {{ item.get_status_display }}
+                    </p>
+                    <p class="zero-margin">
+                      {{ item.temperature_reading }}
+                      <span class="small-label">°C</span>
+                      <img src="{% static 'images/termo.gif' %}" height="30px" width="12px" alt="termo" />
+                    </p>
+                    <p class=" xsmall-label zero-margin">
+                      {{ item.time_recorded|date:"D d M Y"}}
+                    </p>
+                    <p class="xsmall-label zero-margin">
+                      {{ item.time_recorded|time:"h:i a" }}
+                    </p>
+                  </div>
+                </div>
+                <p class="zero-margin font-underline">Last Measurements</p>
+                {% for data in user.temperaturedata_set.all|dictsortreversed:"time_recorded"|slice:":3" %}
+                  {% if data.time_recorded != item.time_recorded %}
+                    <div class="box-container">
+                      <div class="row">
+                      <div class="text-center zero-margin col-lg-6 col-md-6 col-sm-7 col-xs-7">
+                        <p class="large-label">{{ data.get_status_display }}</p>
+                        <p class="xsmall-label"> {{ data.time_recorded }}</p>
+                      </div>
+                      <div class="text-center zero-margin col-lg-6 col-md-6 col-sm-5 col-xs-5">
+                        <span class="xlarge-label">
+                          {{ data.temperature_reading }}
+                          <span class="small-label">°C</span>
+                            <img src="{% static 'images/termo-icon.png' %}" height="20px" width="18px" alt="heart icon"/>
+                        </span>
+                      </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            </div>            
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+          <span>Records <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="10 latest hear rate and temperature graph to see more go to statistics"></a></span>
+          <hr>
+          <div class="container-chart">
+            <canvas id="heartrateChart"></canvas>
+          </div>
+          <div class="container-chart">
+            <canvas id="temperatureChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  <script>
+    {% block query %}
+      $('[data-toggle="tooltip"]').tooltip();
+
+      var endpoint = "{% url 'HealthMonitoring:heart_temp_data_api' %}"
+      var heart_rate_data = []
+      var hrate_date_recorded = []
+      var temperature_data = []
+      var temp_date_recorded = []
+      var average_heart_rate = 0
+      var average_temp_rate = 0
+
+      $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data){
+          heart_rate_data = data.heart_rate_data
+          hrate_data_recorded = data.hrate_date_recorded
+          temperature_data = data.temperature_data
+          temp_date_recorded = data.temp_date_recorded
+          calculate_average_rate()
+          calculate_average_temp()
+          setChart()
+        },
+        error: function(error_data){
+          console.log("errors")
+          console.log(error_data)
+        }
+      })
+
+      function setChart(){
+        var ctx = document.getElementById("heartrateChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: hrate_data_recorded,
+            datasets: [{
+              label: '10 latest heart rate readings --- Average heart rate = ' + average_heart_rate + 'bpm',
+              data: heart_rate_data,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+              ],
+              borderWidth: 3
+            }]
+          },
+          options: {
+            maintainAspectRatio: false,
+            elements: {
+              line: {
+                tension: 0.2,
+                borderColor: 'rgba(255,0,0,0.6)',
+              }
+            },
+            legend: {
+              display: true,
+              labels: {
+                fontSize: 15,
+                fontStyle: 'bold',
+                fontColor: '#000000'
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  max: 100,
+                  min: 40,
+                  stepSize: 5,
+                }
+              }],
+            }
+          }
+        })
+        var ctx2 = document.getElementById("temperatureChart").getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: temp_date_recorded,
+            datasets: [{
+              label: '10 latest temperature readings --- Average temperature = ' + average_temp_rate + '°C',
+              data: temperature_data,
+              backgroundColor: [
+                  'rgba(135, 205, 255, 0.2)',
+              ],
+              borderWidth: 3
+            }]
+          },
+          options: {
+            maintainAspectRatio: false,
+            elements: {
+              line: {
+                tension: 0.2,
+                borderColor: 'rgba(0,0,255,0.6)',
+              }
+            },
+            legend: {
+              display: true,
+              labels: {
+                fontSize: 15,
+                fontStyle: 'bold',
+                fontColor: '#000000'
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  max: 40,
+                  min: 30,
+                  stepSize: 2,
+                }
+              }],
+            }
+          }
+        })
+      }  
+              
+      function calculate_average_rate(){
+        for (var i=0; i < heart_rate_data.length; i++){
+          average_heart_rate = average_heart_rate + heart_rate_data[i];
+        }
+        average_heart_rate = average_heart_rate/heart_rate_data.length;
+      }
+
+      function calculate_average_temp(){
+        for (var i=0; i < temperature_data.length; i++){
+          average_temp_rate = average_temp_rate + temperature_data[i];
+        }
+        average_temp_rate = average_temp_rate/temperature_data.length;
+      }
+
+      setInterval(function() {
+        $('#ref').load("{% url 'HealthMonitoring:refresh' %}");
+      }, 60000);
+    {% endblock %}       
+  </script>
+{% endblock%}

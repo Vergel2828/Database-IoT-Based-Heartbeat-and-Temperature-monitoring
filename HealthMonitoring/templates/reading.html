@@ -1,0 +1,86 @@
+{% load static %}
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+  {% for item in user.heartratedata_set.all|dictsortreversed:"time_recorded"|slice:":1" %}
+    <div class="red-card-container">
+      <div class="text-center center-display">
+        <p class="medium-label">
+          {{ item.get_status_display }}
+        </p>
+        <p class="zero-margin">
+          {{ item.heart_rate_reading }}
+          <span class="small-label">bpm</span>
+          <img src="{% static 'images/giphy.gif' %}" height="25px" width="25px" alt="heart" />
+        </p>
+        <p class=" xsmall-label zero-margin">
+          {{ item.time_recorded|date:"D d M Y"}}
+        </p>
+        <p class="xsmall-label zero-margin">
+          {{ item.time_recorded|time:"h:i a" }}
+        </p>
+      </div>
+    </div>
+    <p class="zero-margin font-underline">Last Measurements</p>
+    {% for data in user.heartratedata_set.all|dictsortreversed:"time_recorded"|slice:":3" %}
+      {% if data.time_recorded != item.time_recorded %}
+        <div class="box-container">
+          <div class="row">
+          <div class="text-center col-lg-7 col-md-7 col-sm-8 col-xs-8">
+            <p class="large-label">{{ data.get_status_display }}</p>
+            <p class="xsmall-label"> {{ data.time_recorded }}</p>
+          </div>
+          <div class="col-lg-5 col-md-5 col-sm-4 col-xs-4">
+            <span class="xlarge-label">
+              {{ data.heart_rate_reading }}
+              <span class="small-label">bpm</span>
+                <img src="{% static 'images/heart-icon.png' %}" height="15px" width="18px" alt="heart icon"/>
+            </span>
+          </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+  {% for item in user.temperaturedata_set.all|dictsortreversed:"time_recorded"|slice:":1" %}
+    <div class="green-card-container">
+      <div class="text-center center-display">
+        <p class="medium-label">
+          {{ item.get_status_display }}
+        </p>
+        <p class="zero-margin">
+          {{ item.temperature_reading }}
+          <span class="small-label">°C</span>
+          <img src="{% static 'images/termo.gif' %}" height="30px" width="12px" alt="termo" />
+        </p>
+        <p class=" xsmall-label zero-margin">
+          {{ item.time_recorded|date:"D d M Y"}}
+        </p>
+        <p class="xsmall-label zero-margin">
+          {{ item.time_recorded|time:"h:i a" }}
+        </p>
+      </div>
+    </div>
+    <p class="zero-margin font-underline">Last Measurements</p>
+    {% for data in user.temperaturedata_set.all|dictsortreversed:"time_recorded"|slice:":3" %}
+      {% if data.time_recorded != item.time_recorded %}
+        <div class="box-container">
+          <div class="row">
+          <div class="text-center zero-margin col-lg-6 col-md-6 col-sm-7 col-xs-7">
+            <p class="large-label">{{ data.get_status_display }}</p>
+            <p class="xsmall-label"> {{ data.time_recorded }}</p>
+          </div>
+          <div class="text-center zero-margin col-lg-6 col-md-6 col-sm-5 col-xs-5">
+            <span class="xlarge-label">
+              {{ data.temperature_reading }}
+              <span class="small-label">°C</span>
+                <img src="{% static 'images/termo-icon.png' %}" height="20px" width="18px" alt="heart icon"/>
+            </span>
+          </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+
