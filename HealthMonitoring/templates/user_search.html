@@ -1,0 +1,74 @@
+{% extends 'Base.html' %}
+{% block title %}
+  Home | IoT Based Patient and Temperature Monitoring
+{% endblock %}
+{% block home-selected %}{% endblock %} <!-- -->
+{% block stat-selected %}{% endblock %}
+{% block content %}
+  {% load static %}
+  <div class="container">
+    {% for error in errors %}
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{ error }}
+      </div>
+    {% endfor %}
+    {% if data %}
+        <div class="alert alert-danger">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          No data found!
+        </div>   
+    {% endif %}
+    {% for query in query_heart_rate %}
+      <div class="well well-md">
+        <span><strong>Date:</strong> {{ query.time_recorded }} | <strong>Heart Rate:</strong> {{query.heart_rate_reading }}bpm | <strong>Status:</strong> {{query.get_status_display }} </span>
+        <!--<a href="" data-target="#view_heart_modal" data-toggle="modal" class="pull-right">View</a>-->
+      </div>
+    {% endfor %}
+    {% for query in query_temperature %}
+      <div class="well well-md">
+        <span><strong>Date:</strong> {{ query.time_recorded }} | <strong>Heart Rate:</strong> {{query.temperature_reading }}bpm | <strong>Status:</strong> {{query.get_status_display }} </span>
+        <!--<a href="" data-target="#view_temp_modal" data-toggle="modal" class="pull-right">View</a>-->
+      </div>
+    {% endfor %}
+    <div class="modal fade" id="view_heart_modal" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-container">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Data Information <span class="glyphicon glyphicon-exclamation-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <p>Hello! you can only create an account in the monitoring machine so please use this account to login to view the page!. Thank you</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-sm data" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="view_temp_modal" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-container">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Data Information <span class="glyphicon glyphicon-exclamation-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <p>Hello! you can only create an account in the monitoring machine so please use this account to login to view the page!. Thank you</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-sm data" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+<script>
+  {% block jquery %}
+    $("#search_input").val("{{ q }}")
+  {% endblock %}
+</script>
